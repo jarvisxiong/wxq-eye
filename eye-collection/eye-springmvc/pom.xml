@@ -10,6 +10,29 @@
   <artifactId>eye-springmvc</artifactId>
   <name>圈眼集成springmvc</name>
   <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.qtone.wxq</groupId>
+      <artifactId>eye-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.qtone.wxq</groupId>
+      <artifactId>eye-mysql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+    </dependency>
+  </dependencies>
+
+
   <build>
     <finalName>eye-database</finalName>
     <plugins>
