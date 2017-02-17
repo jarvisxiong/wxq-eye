@@ -4,11 +4,11 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.qtone.wxq</groupId>
-    <artifactId>wxq-eye</artifactId>
+    <artifactId>eye-collection</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <artifactId>eye-core</artifactId>
-  <name>圈眼</name>
+  <artifactId>eye-springmvc</artifactId>
+  <name>圈眼集成springmvc</name>
   <packaging>jar</packaging>
   <build>
     <finalName>eye-database</finalName>
