@@ -11,7 +11,7 @@
   <name>圈眼查询中心</name>
   <packaging>jar</packaging>
   <build>
-    <finalName>eye-database</finalName>
+    <finalName>eye-query</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

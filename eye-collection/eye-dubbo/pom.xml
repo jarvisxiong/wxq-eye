@@ -11,7 +11,7 @@
   <name>圈眼集成dubbo</name>
   <packaging>jar</packaging>
   <build>
-    <finalName>eye-database</finalName>
+    <finalName>eye-dubbo</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

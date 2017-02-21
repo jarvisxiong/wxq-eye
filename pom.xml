@@ -17,6 +17,8 @@
     <module>eye-store</module>
     <!--查询中心-->
     <module>eye-query</module>
+    <!--圈眼例子-->
+    <module>eye-example</module>
   </modules>
 
   <properties>
@@ -31,6 +33,8 @@
     <spring_mybatis_version>1.2.0</spring_mybatis_version>
     <c3p0_version>0.9.5</c3p0_version>
     <mybatis_version>3.3.0</mybatis_version>
+    <servlet_version>2.5</servlet_version>
+    <mysql_version>5.1.35</mysql_version>
   </properties>
 
 
@@ -134,15 +138,20 @@
       </dependency>
       <!-- Spring-mybatis -->
       <dependency>
-        <groupId>org.mybatis</groupId>
-        <artifactId>mybatis-spring</artifactId>
-        <version>${spring_mybatis_version}</version>
-      </dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>${spring_mybatis_version}</version>
+    </dependency>
       <!-- Mybatis 和Spring的 整合包，是mybatis出的 -->
       <dependency>
         <groupId>org.mybatis</groupId>
         <artifactId>mybatis</artifactId>
         <version>${mybatis_version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>${servlet_version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

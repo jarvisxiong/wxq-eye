@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans    classpath:/org/springframework/beans/factory/xml/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/aop     classpath:/org/springframework/aop/config/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/context    classpath:/org/springframework/context/config/spring-context-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <description>springmvc层</description>
+
+    <!-- 引用@Autowired必须定义这个bean -->
+    <bean
+            class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+    <mvc:interceptors>
+        <bean
+            class="com.qtone.wxq.eye.collection.springmvc.interceptor.EyeServletHandleInterceptor">
+        </bean>
+    </mvc:interceptors>
+
+    <!-- 使用Annotation自动注册Bean，解决事物失效问题：在主容器中不扫描@Controller注解，在SpringMvc中只扫描@Controller注解。 -->
+    <context:component-scan base-package="com.qtone.wxq.eye.example,com.qtone.wxq.eye.collection.springmvc,com.qtone.wxq.eye.store.mysql"/> <!-- base-package 如果多个，用“,”分隔 -->
+
+    <import resource="classpath:/META-INF/service.xml" />
+</beans>
