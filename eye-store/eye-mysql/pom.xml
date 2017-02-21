@@ -12,6 +12,14 @@
     <name>圈眼mysql存储</name>
     <packaging>jar</packaging>
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
         <!-- Spring-mybatis -->
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -25,6 +33,10 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mchange</groupId>
+            <artifactId>c3p0</artifactId>
         </dependency>
     </dependencies>
     <build>

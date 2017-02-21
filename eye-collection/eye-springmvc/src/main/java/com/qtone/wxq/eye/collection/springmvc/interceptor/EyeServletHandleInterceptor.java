@@ -1,6 +1,15 @@
 package com.qtone.wxq.eye.collection.springmvc.interceptor;
 
-import org.springframework.web.servlet.ModelAndView;
+import com.qtone.wxq.eye.collection.springmvc.support.HttpServerReceiveAdapter;
+import com.qtone.wxq.eye.core.adapter.ServerReceiveAdapter;
+import com.qtone.wxq.eye.core.gen.CurrentSpan;
+import com.qtone.wxq.eye.core.gen.Span;
+import com.qtone.wxq.eye.core.gen.TraceData;
+import com.qtone.wxq.eye.store.mysql.presist.model.SpanEntry;
+import com.qtone.wxq.eye.store.mysql.services.SpanService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +20,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String HTTP_SERVLET_SERVICE_NAME = EyeServletHandleInterceptor.class.getName()+".service-name";
+    private static Logger logger = LoggerFactory.getLogger(EyeServletHandleInterceptor.class);
 
+    private ServerReceiveAdapter serverReceiveAdapter  = new HttpServerReceiveAdapter();
+
+    @Autowired(required = false)
+    private SpanService spanService ;
     /**
-     * 当前拦截器处理前
+     * 方法处理前
+     *
      * @param request
      * @param response
      * @param handler
@@ -23,29 +37,30 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (request.getAttribute(HTTP_SERVLET_SERVICE_NAME)!=null ) return true ;//已经处理
 
-        //构造Span
-        //存储到数据库
-
-        return false ;
+        logger.info("preHandle " + " entry");
+        //从header中获取span信息
+        TraceData header = serverReceiveAdapter.getHeader(request);
+        //存入threadLocal中
+        Span span = new Span();
+        span.setTraceId(Long.valueOf(header.getTraceId()));
+        span.setSample(header.getSampled());
+        span.setId(Long.valueOf(header.getSpanId()));
+        if (header.getParentSpanId()==null) span.setParentId(null);
+        else span.setParentId(Long.valueOf(header.getParentSpanId()));
+        CurrentSpan.currentSpan.set(span);
+        //存入mysql
+        SpanEntry entry = new SpanEntry();
+        entry.setParentid(span.getParentId());
+        entry.setSpanid(span.getId());
+        entry.setTraceid(span.getTraceId());
+        spanService.create(entry);
+        return true;
     }
 
     /**
-     * 当前拦截器处理后
-     * @param request
-     * @param response
-     * @param handler
-     * @param modelAndView
-     * @throws Exception
-     */
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        super.postHandle(request, response, handler, modelAndView);
-    }
-
-    /**
-     * 所有拦截器处理完后
+     * 方法完全处理后，渲染后
+     *
      * @param request
      * @param response
      * @param handler
@@ -54,6 +69,6 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
+        CurrentSpan.currentSpan.remove();
     }
 }

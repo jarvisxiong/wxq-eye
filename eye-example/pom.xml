@@ -12,14 +12,6 @@
   <name>圈眼例子</name>
   <dependencies>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.qtone.wxq</groupId>
       <artifactId>eye-springmvc</artifactId>
       <version>${project.version}</version>
@@ -30,10 +22,7 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-    </dependency>
+
   </dependencies>
   <build>
     <finalName>example</finalName>
