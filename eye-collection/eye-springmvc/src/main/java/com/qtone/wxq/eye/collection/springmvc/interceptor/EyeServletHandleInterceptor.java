@@ -51,9 +51,9 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
         CurrentSpan.currentSpan.set(span);
         //存入mysql
         SpanEntry entry = new SpanEntry();
-        entry.setParentid(span.getParentId());
-        entry.setSpanid(span.getId());
-        entry.setTraceid(span.getTraceId());
+        entry.setParentSpanId(header.getParentSpanId());
+        entry.setTraceId(header.getTraceId());
+        entry.setSpanId(header.getSpanId());
         spanService.create(entry);
         return true;
     }

@@ -42,7 +42,7 @@
 		</javaClientGenerator>
 
 		<!-- 配置需要生成的表对象逻辑 -->
-		<table schema="wxq-eye" tableName="annotation" domainObjectName="AnnotationEntry" alias="annotation">
+		<table schema="wxq-eye" tableName="span" domainObjectName="SpanEntry" alias="span">
 			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
 		<!-- 

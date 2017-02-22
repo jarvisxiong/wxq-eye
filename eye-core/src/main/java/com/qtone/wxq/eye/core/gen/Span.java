@@ -8,14 +8,11 @@ import java.util.List;
  */
 public class Span implements Serializable{
 
-    private Long traceId;
-    private Long id;
-    private Long parentId; //optional
-    private String spanName;
-    private String serviceId;
+    private String traceId;
+    private String spanId;
+    private String parentSpanId; //optional
     private List<Annotation> annotations; //固定参数
     private List<BinaryAnnotation> binaryAnnotations; //额外参数
-    private boolean isSample;
 
     public Long getTraceId() {
         return traceId;
