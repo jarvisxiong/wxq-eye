@@ -43,17 +43,17 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
         TraceData header = serverReceiveAdapter.getHeader(request);
         //存入threadLocal中
         Span span = new Span();
-        span.setTraceId(Long.valueOf(header.getTraceId()));
-        span.setSample(header.getSampled());
-        span.setId(Long.valueOf(header.getSpanId()));
-        if (header.getParentSpanId()==null) span.setParentId(null);
-        else span.setParentId(Long.valueOf(header.getParentSpanId()));
+        span.setTraceId(header.getTraceId());
+        span.setSpanId(header.getSpanId());
+        if (header.getParentSpanId()==null) span.setParentSpanId(null);
+        else span.setParentSpanId(header.getParentSpanId());
         CurrentSpan.currentSpan.set(span);
         //存入mysql
         SpanEntry entry = new SpanEntry();
         entry.setParentSpanId(header.getParentSpanId());
         entry.setTraceId(header.getTraceId());
         entry.setSpanId(header.getSpanId());
+        entry.setSpanName("spanName");
         spanService.create(entry);
         return true;
     }

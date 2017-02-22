@@ -1,6 +1,7 @@
 package com.qtone.wxq.eye.core.gen;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by gaozhicheng on 2017/2/17.
@@ -8,28 +9,9 @@ import java.io.Serializable;
 public class BinaryAnnotation implements Serializable {
     private String key;
     private String value;
-    private String type;
-    private Integer duration;
     private Endpoint host;
-
-    public Endpoint getHost() {
-        return host;
-    }
-
-    public void setHost(Endpoint endpoint) {
-        this.host = endpoint;
-    }
-
-    @Override
-    public String toString() {
-        return "BinaryAnnotation{" +
-                "key='" + key + '\'' +
-                ", value=" + value +
-                ", type='" + type + '\'' +
-                ", duration=" + duration +
-                ", endpoint=" + host +
-                '}';
-    }
+    private Date time;
+    private int type = 1; //额外信息
 
     public String getKey() {
         return key;
@@ -47,19 +29,19 @@ public class BinaryAnnotation implements Serializable {
         this.value = value;
     }
 
-    public String getType() {
-        return type;
+    public Endpoint getHost() {
+        return host;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setHost(Endpoint host) {
+        this.host = host;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public Date getTime() {
+        return time;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setTime(Date time) {
+        this.time = time;
     }
 }
