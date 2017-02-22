@@ -32,7 +32,7 @@
 			<!--<property name="rootClass" value="com.qtone.wxq.commons.domain.base.EntityDomain"/>-->
 		</javaModelGenerator>
 
-		<sqlMapGenerator targetPackage="sqlmap.wxq-eye" targetProject="src/main/resources">
+		<sqlMapGenerator targetPackage="sqlmap.eye-mysql" targetProject="src/main/resources">
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 
@@ -42,7 +42,7 @@
 		</javaClientGenerator>
 
 		<!-- 配置需要生成的表对象逻辑 -->
-		<table schema="wxq-eye" tableName="span" domainObjectName="SpanEntry" alias="span">
+		<table schema="wxq-eye" tableName="trace" domainObjectName="TraceEntry" alias="trace">
 			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()" identity="true"/>
 		</table>
 		<!-- 

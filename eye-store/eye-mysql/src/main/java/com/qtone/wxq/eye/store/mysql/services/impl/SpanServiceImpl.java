@@ -32,7 +32,7 @@ public class SpanServiceImpl implements SpanService {
     @Override
     public SpanEntry get(long primaryKeyId) {
         try {
-            return spanEntryMapper.selectByPrimaryKey((int) primaryKeyId);
+            return spanEntryMapper.selectByPrimaryKey(primaryKeyId);
         } catch (Exception e) {
             logger.error("获取Span失败 id:" + primaryKeyId, e);
         }
