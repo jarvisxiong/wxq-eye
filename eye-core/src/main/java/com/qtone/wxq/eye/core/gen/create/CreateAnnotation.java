@@ -16,6 +16,17 @@ import java.util.Set;
 public class CreateAnnotation {
 
     /**
+     * 构建sr 参数
+     */
+    public static void srAnnotation(Span span, Endpoint endpoint,Date time){
+        Annotation anno = new Annotation();
+        anno.setTime(time);
+        anno.setValue(Annotation.SERVER_RECEIVE);
+        anno.setHost(endpoint);
+        span.addAnnotation(anno);
+    }
+
+    /**
      * 构建ss 参数
      */
     public static void ssAnnotation(Span span, Endpoint endpoint,Date time){
@@ -26,7 +37,7 @@ public class CreateAnnotation {
         span.addAnnotation(anno);
     }
 
-    public static void ssBinaryAnnotation(Span span , Endpoint endpoint , Date time, Map<String,String> mapValue){
+    public static void srBinaryAnnotation(Span span , Endpoint endpoint , Date time, Map<String,String> mapValue){
         if (mapValue==null ){
             return ;
         }
@@ -42,5 +53,6 @@ public class CreateAnnotation {
             span.addBinaryAnnotation(binaryAnno);
         }
     }
+
 
 }

@@ -5,7 +5,7 @@ package com.qtone.wxq.eye.core.adapter;
  */
 
 /**
- * ss(服务端接收)适配器
+ * sr(服务端接收)适配器
  */
 public interface ServerReceiveAdapter {
 

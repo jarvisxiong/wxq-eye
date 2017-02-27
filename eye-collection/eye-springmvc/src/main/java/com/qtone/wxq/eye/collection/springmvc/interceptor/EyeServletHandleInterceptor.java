@@ -1,6 +1,7 @@
 package com.qtone.wxq.eye.collection.springmvc.interceptor;
 
 import com.qtone.wxq.eye.core.adapter.ServerReceiveAdapter;
+import com.qtone.wxq.eye.core.adapter.ServerSendAdapter;
 import com.qtone.wxq.eye.core.gen.EyeConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired(required = false)
     private ServerReceiveAdapter httpServerReceiveAdapter  ;
+
+    @Autowired(required = false)
+    private ServerSendAdapter serverSendAdapter ;
 
 
     /**
@@ -49,6 +53,10 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+
+
+        serverSendAdapter.handle(request);
+
         EyeConfig.clearCurrentSpan();
     }
 }

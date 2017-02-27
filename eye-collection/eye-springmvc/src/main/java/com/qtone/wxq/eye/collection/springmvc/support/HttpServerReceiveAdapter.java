@@ -8,7 +8,6 @@ import com.qtone.wxq.eye.core.gen.create.CreateAnnotation;
 import com.qtone.wxq.eye.core.gen.create.CreateId;
 import com.qtone.wxq.eye.core.gen.dto.Endpoint;
 import com.qtone.wxq.eye.core.gen.dto.Span;
-import com.qtone.wxq.eye.store.mysql.services.SpanService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,9 @@ import java.util.Date;
 @Repository("httpServerReceiveAdapter")
 public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
 
-    private static final Logger logger = LoggerFactory.getLogger(HttpServerReceiveAdapter.class);
+    public static final String HTTP_ATTRIBUTE_SPAN_INFO = "SPAN_INFO_ATTRIBITE_REQUEST_";
 
-    @Autowired(required = false)
-    private SpanService spanService;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServerReceiveAdapter.class);
 
     @Autowired(required = false)
     private MysqlDBImpl mysqlDBImpl ;
@@ -45,16 +43,18 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
 
         EyeConfig.setCurrentSpan(span);
 
+        req.setAttribute(HTTP_ATTRIBUTE_SPAN_INFO,span);
+
         setSpanAnnotation(span, req.getRemoteHost(), req.getRemotePort(), now);
 
         setSpanBinaryAnnotations(span, req.getRemoteHost(), req.getRemotePort(), now);
 
-        mysqlDBImpl.saveDB(span);
+//        mysqlDBImpl.saveDB(span);
 
     }
 
     /**
-     * 设置 ss 的 额外annotation参数
+     * 设置 sr 的 额外annotation参数
      *
      * @param span
      * @param host
@@ -65,7 +65,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
         Endpoint endpoint = new Endpoint();
         endpoint.setIp(host);
         endpoint.setPort(port);
-        CreateAnnotation.ssBinaryAnnotation(span, endpoint, now, null);
+        CreateAnnotation.srBinaryAnnotation(span, endpoint, now, null);
     }
 
     /**
@@ -79,7 +79,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
         try {
             req = (HttpServletRequest) request;
         } catch (Exception e) {
-            logger.error("[ ss ] : HttpServletRequest转换异常", e);
+            logger.error("[ sr ] : HttpServletRequest转换异常", e);
         }
         return req;
     }
@@ -91,7 +91,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
      * @return
      */
     private Span getHeader(HttpServletRequest request) {
-        logger.info("[ ss ] : 获取http Header 信息");
+        logger.info("[ sr ] : 获取http Header 信息");
         String spanId = request.getHeader(EyeHttpHeaderValue.SpanId.getName());
         String parentSpanId = request.getHeader(EyeHttpHeaderValue.ParentSpanId.getName());
         String traceId = request.getHeader(EyeHttpHeaderValue.TraceId.getName());
@@ -99,7 +99,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
         if (spanId != null && traceId != null) {
             span = Span.genSpan(traceId, spanId, CreateId.genSpanId(), request.getMethod());
         } else {//root span
-            logger.info("[ ss ] : 生成 root span ");
+            logger.info("[ sr ] : 生成 root span ");
             span = Span.rootSpan(CreateId.genTraceId(), CreateId.genSpanId(), request.getMethod());
         }
         return span;
@@ -107,7 +107,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
     }
 
     /**
-     * 设置span的固定ss annotation参数
+     * 设置span的固定sr annotation参数
      *
      * @param span
      * @param host
@@ -118,7 +118,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
         Endpoint endpoint = new Endpoint();
         endpoint.setIp(host);
         endpoint.setPort(port);
-        CreateAnnotation.ssAnnotation(span, endpoint, nowTime);
+        CreateAnnotation.srAnnotation(span, endpoint, nowTime);
     }
 
 
