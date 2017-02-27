@@ -24,7 +24,7 @@ public class TraceServiceImpl implements TraceService {
         try {
             return traceEntryMapper.insert(entry);
         } catch (Exception e) {
-            logger.error("Span插入失败", e);
+            logger.error("Trace插入失败", e);
         }
         return 0;
     }
@@ -34,7 +34,7 @@ public class TraceServiceImpl implements TraceService {
         try {
             return traceEntryMapper.selectByPrimaryKey(primaryKeyId);
         } catch (Exception e) {
-            logger.error("获取Span失败 id:" + primaryKeyId, e);
+            logger.error("获取Trace失败 id:" + primaryKeyId, e);
         }
         return null;
     }

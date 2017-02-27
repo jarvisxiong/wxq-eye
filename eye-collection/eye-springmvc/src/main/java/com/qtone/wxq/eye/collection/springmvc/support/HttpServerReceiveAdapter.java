@@ -1,13 +1,13 @@
 package com.qtone.wxq.eye.collection.springmvc.support;
 
 import com.qtone.wxq.eye.core.adapter.ServerReceiveAdapter;
-import com.qtone.wxq.eye.core.gen.Constant.EyeHttpHeaderValue;
+import com.qtone.wxq.eye.core.adapter.support.MysqlDBImpl;
 import com.qtone.wxq.eye.core.gen.EyeConfig;
+import com.qtone.wxq.eye.core.gen.constant.EyeHttpHeaderValue;
 import com.qtone.wxq.eye.core.gen.create.CreateAnnotation;
 import com.qtone.wxq.eye.core.gen.create.CreateId;
 import com.qtone.wxq.eye.core.gen.dto.Endpoint;
 import com.qtone.wxq.eye.core.gen.dto.Span;
-import com.qtone.wxq.eye.store.mysql.presist.model.SpanEntry;
 import com.qtone.wxq.eye.store.mysql.services.SpanService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +28,8 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
     @Autowired(required = false)
     private SpanService spanService;
 
+    @Autowired(required = false)
+    private MysqlDBImpl mysqlDBImpl ;
 
     @Override
     public void handle(Object request) {
@@ -47,14 +49,8 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
 
         setSpanBinaryAnnotations(span, req.getRemoteHost(), req.getRemotePort(), now);
 
+        mysqlDBImpl.saveDB(span);
 
-        //存入mysql
-        SpanEntry entry = new SpanEntry();
-        entry.setParentSpanId(span.getParentSpanId());
-        entry.setTraceId(span.getTraceId());
-        entry.setSpanId(span.getSpanId());
-        entry.setSpanName("spanName");
-        spanService.create(entry);
     }
 
     /**

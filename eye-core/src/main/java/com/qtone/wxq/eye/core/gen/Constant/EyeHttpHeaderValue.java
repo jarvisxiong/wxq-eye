@@ -1,4 +1,4 @@
-package com.qtone.wxq.eye.core.gen.Constant;
+package com.qtone.wxq.eye.core.gen.constant;
 
 /**
  * Created by gaozhicheng on 2017/2/18.

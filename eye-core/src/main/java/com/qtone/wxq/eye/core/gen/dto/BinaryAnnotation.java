@@ -44,4 +44,12 @@ public class BinaryAnnotation implements Serializable {
     public void setTime(Date time) {
         this.time = time;
     }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 }

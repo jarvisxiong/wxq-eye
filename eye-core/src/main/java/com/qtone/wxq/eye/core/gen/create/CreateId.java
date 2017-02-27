@@ -30,7 +30,7 @@ public class CreateId {
         }
 
         public static SpanId create() {
-            String spanId = String.valueOf(System.currentTimeMillis());
+            String spanId = String.valueOf("spanId_"+System.currentTimeMillis());
             return new SpanId(spanId);
         }
     }
@@ -52,7 +52,7 @@ public class CreateId {
         }
 
         public static TraceId create() {
-            String traceId = String.valueOf(System.currentTimeMillis());
+            String traceId = String.valueOf("traceId_"+System.currentTimeMillis());
             return new TraceId(traceId);
         }
     }

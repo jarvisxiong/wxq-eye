@@ -10,6 +10,19 @@
   <artifactId>eye-core</artifactId>
   <name>圈眼</name>
   <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring_version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.qtone.wxq</groupId>
+      <artifactId>eye-mysql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
   <build>
     <finalName>eye-database</finalName>
     <plugins>

@@ -155,8 +155,8 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into annotation (key, value, ip, 
-      port, time, span_Id, 
+    insert into annotation (`key`, `value`, ip,
+      `port`, time, span_Id,
       trace_Id, type)
     values (#{key,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
       #{port,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{spanId,jdbcType=VARCHAR}, 

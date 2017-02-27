@@ -33,7 +33,7 @@
 	    <!--  需要从jar中加载GlobalMapper.xml -->
 		<property name="mapperLocations">
             <list>
-                <value>classpath*:/sqlmap/wxq-eye/*Mapper.xml</value>
+                <value>classpath*:/sqlmap/eye-mysql/*Mapper.xml</value>
                 <!--<value>classpath*:/sqlmap/wxq-eye/ex/*Mapper.xml</value>-->
             </list>
        	</property>

@@ -73,4 +73,12 @@ public class Annotation implements Serializable {
     public void setHost(Endpoint host) {
         this.host = host;
     }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 }
