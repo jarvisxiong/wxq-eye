@@ -1,4 +1,4 @@
-package com.qtone.wxq.eye.core.gen;
+package com.qtone.wxq.eye.core.gen.dto;
 
 import java.io.Serializable;
 import java.util.Date;

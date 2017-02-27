@@ -1,12 +1,7 @@
 package com.qtone.wxq.eye.collection.springmvc.interceptor;
 
-import com.qtone.wxq.eye.collection.springmvc.support.HttpServerReceiveAdapter;
 import com.qtone.wxq.eye.core.adapter.ServerReceiveAdapter;
-import com.qtone.wxq.eye.core.gen.CurrentSpan;
-import com.qtone.wxq.eye.core.gen.Span;
-import com.qtone.wxq.eye.core.gen.TraceData;
-import com.qtone.wxq.eye.store.mysql.presist.model.SpanEntry;
-import com.qtone.wxq.eye.store.mysql.services.SpanService;
+import com.qtone.wxq.eye.core.gen.EyeConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +17,10 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(EyeServletHandleInterceptor.class);
 
-    private ServerReceiveAdapter serverReceiveAdapter  = new HttpServerReceiveAdapter();
-
     @Autowired(required = false)
-    private SpanService spanService ;
+    private ServerReceiveAdapter httpServerReceiveAdapter  ;
+
+
     /**
      * 方法处理前
      *
@@ -38,24 +33,9 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        logger.info("preHandle " + " entry");
-        //从header中获取span信息
-        TraceData header = serverReceiveAdapter.getHeader(request);
-        //存入threadLocal中
-        Span span = new Span();
-        span.setTraceId(header.getTraceId());
-        span.setSpanId(header.getSpanId());
-        if (header.getParentSpanId()==null) span.setParentSpanId(null);
-        else span.setParentSpanId(header.getParentSpanId());
-        CurrentSpan.currentSpan.set(span);
-        //存入mysql
-        SpanEntry entry = new SpanEntry();
-        entry.setParentSpanId(header.getParentSpanId());
-        entry.setTraceId(header.getTraceId());
-        entry.setSpanId(header.getSpanId());
-        entry.setSpanName("spanName");
-        spanService.create(entry);
-        return true;
+        httpServerReceiveAdapter.handle(request);
+
+        return true ;
     }
 
     /**
@@ -69,6 +49,6 @@ public class EyeServletHandleInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        CurrentSpan.currentSpan.remove();
+        EyeConfig.clearCurrentSpan();
     }
 }

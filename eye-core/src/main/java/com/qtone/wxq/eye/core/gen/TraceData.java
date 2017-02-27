@@ -5,22 +5,18 @@ package com.qtone.wxq.eye.core.gen;
  */
 public class TraceData {
 
-    private String spanId ;
-    private String traceId ;
-    private String parentSpanId ;
-    private Boolean isSampled ;
+    private String spanId;
+    private String traceId;
+    private String parentSpanId;
 
     public TraceData() {
     }
 
-    public TraceData(String spanId, Boolean isSampled) {
+    public TraceData(String spanId) {
         this.spanId = spanId;
-        this.isSampled = isSampled;
     }
 
-    public TraceData(Boolean isSampled, String traceId, String parentSpanId, String spanId) {
-
-        this.isSampled = isSampled;
+    public TraceData(String traceId, String parentSpanId, String spanId) {
         this.traceId = traceId;
         this.parentSpanId = parentSpanId;
         this.spanId = spanId;
@@ -48,18 +44,6 @@ public class TraceData {
 
     public void setParentSpanId(String parentSpanId) {
         this.parentSpanId = parentSpanId;
-    }
-
-    public Boolean getSampled() {
-        return isSampled;
-    }
-
-    public void setSampled(Boolean sampled) {
-        isSampled = sampled;
-    }
-
-    public static TraceData create(String spanId,Boolean isSampled){
-       return new TraceData(spanId,isSampled);
     }
 
 }
