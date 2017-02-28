@@ -1,6 +1,7 @@
-package com.qtone.wxq.eye.core.adapter.support;
+package com.qtone.wxq.eye.core.factory.support;
 
-import com.qtone.wxq.eye.core.adapter.IStoreDBAdapter;
+import com.qtone.wxq.eye.core.factory.IStoreFactory;
+import com.qtone.wxq.eye.core.gen.EyeConfig;
 import com.qtone.wxq.eye.core.gen.dto.Annotation;
 import com.qtone.wxq.eye.core.gen.dto.BinaryAnnotation;
 import com.qtone.wxq.eye.core.gen.dto.Span;
@@ -18,10 +19,10 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by gaozhicheng on 2017/2/27.
  */
-@Repository("mysqlDBImpl")
-public class MysqlDBImpl implements IStoreDBAdapter {
+@Repository("storeMysqlImpl")
+public class StoreMysqlImpl implements IStoreFactory {
 
-    private static Logger logger = LoggerFactory.getLogger(MysqlDBImpl.class);
+    private static Logger logger = LoggerFactory.getLogger(StoreMysqlImpl.class);
 
     @Autowired(required = false)
     private SpanService spanService;
@@ -33,7 +34,7 @@ public class MysqlDBImpl implements IStoreDBAdapter {
     private TraceService traceService;
 
 
-    public void saveDB(Span span) {
+    public void saveSpanAnno(Span span) {
         if (span != null) {
             if (span.getParentSpanId() != null && span.getParentSpanId().length() > 0) {
 
@@ -41,7 +42,7 @@ public class MysqlDBImpl implements IStoreDBAdapter {
                 logger.info("[root span, 创建新trace ]");
                 TraceEntry traceEntry = new TraceEntry();
                 traceEntry.setTraceId(span.getTraceId());
-                traceEntry.setTraceName("traceName");
+                traceEntry.setTraceName(EyeConfig.traceName);
                 traceService.create(traceEntry);
             }
             logger.info("[ span, 创建新span ]");

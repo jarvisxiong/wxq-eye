@@ -7,19 +7,11 @@ import com.qtone.wxq.eye.core.gen.dto.Span;
  */
 public class EyeConfig {
 
-    private String traceName = "default-service" ;
+    public static final String traceName = "default-service" ;
 
     private String ipport;
 
     private static final ThreadLocal<Span> currentSpan  = new ThreadLocal<Span>();
-
-    public String getTraceName() {
-        return traceName;
-    }
-
-    public void setTraceName(String traceName) {
-        this.traceName = traceName;
-    }
 
     public String getIpport() {
         return ipport;

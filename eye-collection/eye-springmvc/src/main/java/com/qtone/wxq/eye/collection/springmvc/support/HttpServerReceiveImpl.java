@@ -1,16 +1,13 @@
 package com.qtone.wxq.eye.collection.springmvc.support;
 
-import com.qtone.wxq.eye.core.adapter.ServerReceiveAdapter;
-import com.qtone.wxq.eye.core.adapter.support.MysqlDBImpl;
+import com.qtone.wxq.eye.core.factory.IServerReceiveFactory;
 import com.qtone.wxq.eye.core.gen.EyeConfig;
 import com.qtone.wxq.eye.core.gen.constant.EyeHttpHeaderValue;
 import com.qtone.wxq.eye.core.gen.create.CreateAnnotation;
 import com.qtone.wxq.eye.core.gen.create.CreateId;
-import com.qtone.wxq.eye.core.gen.dto.Endpoint;
 import com.qtone.wxq.eye.core.gen.dto.Span;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +16,12 @@ import java.util.Date;
 /**
  * Created by gaozhicheng on 2017/2/21.
  */
-@Repository("httpServerReceiveAdapter")
-public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
+@Repository("httpServerReceiveImpl")
+public class HttpServerReceiveImpl implements IServerReceiveFactory {
 
     public static final String HTTP_ATTRIBUTE_SPAN_INFO = "SPAN_INFO_ATTRIBITE_REQUEST_";
 
-    private static final Logger logger = LoggerFactory.getLogger(HttpServerReceiveAdapter.class);
-
-    @Autowired(required = false)
-    private MysqlDBImpl mysqlDBImpl ;
+    private static final Logger logger = LoggerFactory.getLogger(HttpServerReceiveImpl.class);
 
     @Override
     public void handle(Object request) {
@@ -35,21 +29,19 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
         EyeConfig.clearCurrentSpan();
 
         HttpServletRequest req = transHttpRequest(request);
-        if (req == null ){
+        if (req == null) {
             logger.info("非法请求request");
-            return  ;
+            return;
         }
         Span span = getHeader(req);
 
         EyeConfig.setCurrentSpan(span);
 
-        req.setAttribute(HTTP_ATTRIBUTE_SPAN_INFO,span);
+        req.setAttribute(HTTP_ATTRIBUTE_SPAN_INFO, span);
 
         setSpanAnnotation(span, req.getRemoteHost(), req.getRemotePort(), now);
 
         setSpanBinaryAnnotations(span, req.getRemoteHost(), req.getRemotePort(), now);
-
-//        mysqlDBImpl.saveDB(span);
 
     }
 
@@ -62,10 +54,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
      * @param now
      */
     private void setSpanBinaryAnnotations(Span span, String host, int port, Date now) {
-        Endpoint endpoint = new Endpoint();
-        endpoint.setIp(host);
-        endpoint.setPort(port);
-        CreateAnnotation.srBinaryAnnotation(span, endpoint, now, null);
+        CreateAnnotation.srBinaryAnnotation(span, host, port, now, null);
     }
 
     /**
@@ -115,10 +104,7 @@ public class HttpServerReceiveAdapter implements ServerReceiveAdapter {
      * @param nowTime
      */
     private void setSpanAnnotation(Span span, String host, int port, Date nowTime) {
-        Endpoint endpoint = new Endpoint();
-        endpoint.setIp(host);
-        endpoint.setPort(port);
-        CreateAnnotation.srAnnotation(span, endpoint, nowTime);
+        CreateAnnotation.srAnnotation(span, host, port, nowTime);
     }
 
 

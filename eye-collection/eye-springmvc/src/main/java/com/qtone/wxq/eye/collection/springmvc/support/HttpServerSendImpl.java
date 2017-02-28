@@ -1,9 +1,9 @@
 package com.qtone.wxq.eye.collection.springmvc.support;
 
-import com.qtone.wxq.eye.core.adapter.ServerSendAdapter;
-import com.qtone.wxq.eye.core.adapter.support.MysqlDBImpl;
+import com.qtone.wxq.eye.core.factory.IServerSendFactory;
+import com.qtone.wxq.eye.core.factory.IStoreFactory;
+import com.qtone.wxq.eye.core.gen.EyeConfig;
 import com.qtone.wxq.eye.core.gen.create.CreateAnnotation;
-import com.qtone.wxq.eye.core.gen.dto.Endpoint;
 import com.qtone.wxq.eye.core.gen.dto.Span;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +16,13 @@ import java.util.Date;
 /**
  * Created by gaozhicheng on 2017/2/27.
  */
-@Repository("httpServerSendAdapter")
-public class HttpServerSendAdapter implements ServerSendAdapter {
+@Repository("httpServerSendImpl")
+public class HttpServerSendImpl implements IServerSendFactory {
 
-    private final Logger logger = LoggerFactory.getLogger(HttpServerSendAdapter.class);
+    private final Logger logger = LoggerFactory.getLogger(HttpServerSendImpl.class);
 
     @Autowired(required = false)
-    private MysqlDBImpl mysqlDBImpl ;
+    private IStoreFactory storeMysqlImpl;
 
     @Override
     public void handle(Object request) {
@@ -34,11 +34,14 @@ public class HttpServerSendAdapter implements ServerSendAdapter {
             logger.info("非法请求request");
             return;
         }
-        Span span = (Span) req.getAttribute(HttpServerReceiveAdapter.HTTP_ATTRIBUTE_SPAN_INFO);
+        Span span = (Span) req.getAttribute(HttpServerReceiveImpl.HTTP_ATTRIBUTE_SPAN_INFO);
 
         this.setSpanAnnotation(span, req.getRemoteHost(), req.getRemotePort(), now);
 
-        mysqlDBImpl.saveDB(span);
+        storeMysqlImpl.saveSpanAnno(span);
+
+        EyeConfig.clearCurrentSpan();
+
     }
 
 
@@ -67,9 +70,6 @@ public class HttpServerSendAdapter implements ServerSendAdapter {
      * @param nowTime
      */
     private void setSpanAnnotation(Span span, String host, int port, Date nowTime) {
-        Endpoint endpoint = new Endpoint();
-        endpoint.setIp(host);
-        endpoint.setPort(port);
-        CreateAnnotation.ssAnnotation(span, endpoint, nowTime);
+        CreateAnnotation.ssAnnotation(span, host, port, nowTime);
     }
 }

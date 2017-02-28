@@ -1,9 +1,9 @@
-package com.qtone.wxq.eye.core.adapter;
+package com.qtone.wxq.eye.core.factory;
 
 /**
  * Created by gaozhicheng on 2017/2/27.
  */
-public interface ServerSendAdapter {
+public interface IServerSendFactory {
 
     void handle(Object request);
 }
