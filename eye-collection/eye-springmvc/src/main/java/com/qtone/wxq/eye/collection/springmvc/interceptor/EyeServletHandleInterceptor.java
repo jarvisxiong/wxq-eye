@@ -2,7 +2,6 @@ package com.qtone.wxq.eye.collection.springmvc.interceptor;
 
 import com.qtone.wxq.eye.core.factory.IServerReceiveFactory;
 import com.qtone.wxq.eye.core.factory.IServerSendFactory;
-import com.qtone.wxq.eye.core.gen.EyeConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
